@@ -8,117 +8,194 @@
     <style>
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), 
+            margin: 0; padding: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)), 
                         url('https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080');
-            background-size: cover;
-            background-attachment: fixed;
-            color: #fff;
-            text-align: center;
+            background-size: cover; background-attachment: fixed;
+            color: #fff; text-align: center;
         }
-        h1 {
-            margin-top: 50px;
-            font-size: 3em;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+        
+        h1 { margin-top: 50px; font-size: 3em; text-transform: uppercase; }
+        
+        .filtros { margin: 30px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .btn-filtro {
+            background: rgba(255,255,255,0.1);
+            color: #fff; border: 1px solid #fff;
+            padding: 10px 20px; border-radius: 20px;
+            cursor: pointer; transition: 0.3s;
         }
-        .subtitulo { color: #bbb; margin-bottom: 50px; }
+        .btn-filtro.active { background: #7CFC00; color: #000; border-color: #7CFC00; }
+
         .vitrine {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex; justify-content: center; flex-wrap: wrap;
+            gap: 25px; padding: 20px; max-width: 1200px; margin: 0 auto;
         }
+
         .card {
             background-color: rgba(20, 20, 20, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            width: 260px;
-            padding: 20px;
-            transition: 0.4s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            border-radius: 15px; width: 280px; padding: 20px;
+            transition: 0.4s; display: flex; flex-direction: column;
+            position: relative;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: #7CFC00;
-            box-shadow: 0 10px 30px rgba(124, 252, 0, 0.3);
+        
+        .badge-desconto {
+            position: absolute; top: 10px; right: 10px;
+            background: #ff0000; color: white;
+            padding: 5px 10px; border-radius: 5px;
+            font-weight: bold; font-size: 0.9em;
+            z-index: 10;
         }
+
         .card img {
-            max-width: 100%;
-            height: 200px;
-            object-fit: contain;
-            border-radius: 8px;
-            filter: grayscale(100%);
-            transition: 0.3s;
-            background: white;
-            padding: 10px;
+            max-width: 100%; height: 180px; object-fit: contain;
+            background: white; padding: 10px; border-radius: 8px;
         }
-        .card:hover img { filter: grayscale(0%); }
-        .card h2 { font-size: 1.1em; margin: 15px 0; min-height: 2.5em; }
+
         .preco { font-size: 1.8em; color: #7CFC00; font-weight: bold; margin: 10px 0; }
-        .btn {
-            display: block;
-            background-color: #fff;
-            color: #000;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
+        
+        .comentarios-internos {
+            font-size: 0.85em; color: #bbb; font-style: italic;
+            margin: 10px 0; text-align: left;
+            border-top: 1px solid #333; padding-top: 10px;
         }
-        .btn:hover { background-color: #7CFC00; }
+
+        .mural-pedidos {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            max-width: 800px; margin: 50px auto;
+            padding: 30px; border-radius: 15px;
+            border: 1px solid #7CFC00;
+            text-align: left;
+        }
+        .mural-pedidos h3 { color: #7CFC00; text-transform: uppercase; text-align: center; }
+        
+        .hide { display: none; }
         footer { margin-top: 80px; padding: 40px; background: rgba(0,0,0,0.8); color: #666; }
     </style>
 </head>
 <body>
     <h1>Canal do Suply 💊</h1>
-    <p class="subtitulo">As melhores ofertas de suplementação selecionadas por quem treina.</p>
-    <div class="vitrine">
+    
+    <div class="filtros">
+        <button class="btn-filtro active" onclick="filtrar('todos')">Todos</button>
+        <button class="btn-filtro" onclick="filtrar('creatina')">Creatinas</button>
+        <button class="btn-filtro" onclick="filtrar('proteina')">Proteínas</button>
+        <button class="btn-filtro" onclick="filtrar('saude')">Saúde & Bem-estar</button>
+        <button class="btn-filtro" onclick="filtrar('combos')">Combos</button> <button class="btn-filtro" onclick="filtrar('acessorio')">Acessórios</button>
+    </div>
 
-        <div class="card">
+    <div class="vitrine" id="vitrine">
+
+        <div class="card" data-categoria="creatina">
+            <div class="badge-desconto">-50% OFF</div>
             <img src="https://m.media-amazon.com/images/I/51IOZbM5DiL._AC_SL1000_.jpg" alt="Creatina 3VS Nutrition 500g">
-            <div>
-                <h2>Creatina 3VS Nutrition 500g</h2>
-                <p class="preco">R$ 44,90</p>
-            </div>
-            <a href="https://amzn.to/4cvYp0h" target="_blank" class="btn">VER NA AMAZON</a>
+            <h2>Creatina 3VS Nutrition 500g</h2>
+            <p class="preco">R$ 44,90</p>
+            <div class="comentarios-internos"><div>💬 Melhor custo-benefício!</div><div>💬 Entrega muito rápida.</div></div>
+            <a href="https://amzn.to/4cvYp0h" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
         </div>
     
-        <div class="card">
-            <img src="https://m.media-amazon.com/images/I/81Cs2ScPUEL._AC_SL1500_.jpg" alt="Whey Protein Concentrado Pote (900g) - Sabor Baunilha">
-            <div>
-                <h2>Whey Protein Concentrado Pote (900g) - Sabor Baunilha</h2>
-                <p class="preco">R$ 187,80</p>
-            </div>
-            <a href="https://amzn.to/4dvlSQj" target="_blank" class="btn">VER NA AMAZON</a>
+        <div class="card" data-categoria="proteina">
+            <div class="badge-desconto">-15% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/81Cs2ScPUEL._AC_SL1500_.jpg" alt="Whey Protein Concentrado Pote (900g)">
+            <h2>Whey Protein Concentrado Pote (900g)</h2>
+            <p class="preco">R$ 187,80</p>
+            <div class="comentarios-internos"><div>💬 Sabor baunilha é nota 10.</div><div>💬 Dissolve muito bem.</div></div>
+            <a href="https://amzn.to/4dvlSQj" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
         </div>
     
-        <div class="card">
-            <img src="https://m.media-amazon.com/images/I/61FI2OlyZAL._AC_SL1500_.jpg" alt="Coqueteleira Shakeira Ellym Nutrition 500ml">
-            <div>
-                <h2>Coqueteleira Shakeira Ellym Nutrition 500ml</h2>
-                <p class="preco">R$ 37,64</p>
-            </div>
-            <a href="https://amzn.to/3Op3G0w" target="_blank" class="btn">VER NA AMAZON</a>
+        <div class="card" data-categoria="acessorio">
+            <div class="badge-desconto">-10% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/61FI2OlyZAL._AC_SL1500_.jpg" alt="Coqueteleira Shakeira Ellym Nutrition">
+            <h2>Coqueteleira Shakeira Ellym Nutrition</h2>
+            <p class="preco">R$ 37,64</p>
+            <div class="comentarios-internos"><div>💬 Não vaza nada!</div><div>💬 Porta comprimidos ajuda muito.</div></div>
+            <a href="https://amzn.to/3Op3G0w" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
         </div>
     
-        <div class="card">
-            <img src="https://m.media-amazon.com/images/I/71rzVRssGZL._AC_SL1500_.jpg" alt="Creatina Pura 1kg Dark Lab Monohidratada">
-            <div>
-                <h2>Creatina Pura 1kg Dark Lab Monohidratada</h2>
-                <p class="preco">R$ 69,90</p>
-            </div>
-            <a href="https://amzn.to/41kFI9I" target="_blank" class="btn">VER NA AMAZON</a>
+        <div class="card" data-categoria="creatina">
+            <div class="badge-desconto">-12% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/71rzVRssGZL._AC_SL1500_.jpg" alt="Creatina Pura 1kg Dark Lab Monohidratada 100% de Pureza, Sem Sabor">
+            <h2>Creatina Pura 1kg Dark Lab Monohidratada 100% de Pureza, Sem Sabor</h2>
+            <p class="preco">R$69,90</p>
+            <div class="comentarios-internos"><div>💬 Produto original e muito bom, já uso faz 2 anos e é o melhor custo beneficio de todas as creatina. Entrega foi bem rapida</div></div>
+            <a href="https://amzn.to/41S6Lt1" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
+        </div>
+    
+        <div class="card" data-categoria="creatina">
+            <div class="badge-desconto">- OFF</div>
+            <img src="https://m.media-amazon.com/images/I/51Acd0fuOsL._AC_SL1080_.jpg" alt="Vitafor - Creafort Creatina Creapure - 300g">
+            <h2>Vitafor - Creafort Creatina Creapure - 300g</h2>
+            <p class="preco">R$140,00</p>
+            <div class="comentarios-internos"><div>💬 Produto de ótima qualidade, original e confiável. Chegou no prazo e bem embalado. Recomendo.</div></div>
+            <a href="https://amzn.to/4efP6CS" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
+        </div>
+    
+        <div class="card" data-categoria="saude">
+            <div class="badge-desconto">-49% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/51oBtMDTfqL._AC_SL1080_.jpg" alt="Vitafor - Omegafor Plus - 240 Cápsulas">
+            <h2>Vitafor - Omegafor Plus - 240 Cápsulas</h2>
+            <p class="preco">R$ 190,00</p>
+            <div class="comentarios-internos"><div>💬 Ultra concentração de EPA e DHA.</div><div>💬 Essencial para quem treina pesado.</div></div>
+            <a href="https://amzn.to/4tt3Vqa" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
+        </div>
+    
+        <div class="card" data-categoria="saude">
+            <div class="badge-desconto">-6% OFF</div>
+            <img src="https://m.media-amazon.com/images/I/51lrpLXPXeL._AC_SL1080_.jpg" alt="Coenzima Q10 (60 Caps) - Vitafor">
+            <h2>Coenzima Q10 (60 Caps) - Vitafor</h2>
+            <p class="preco">R$ 100,85</p>
+            <div class="comentarios-internos"><div>💬 Ação antioxidante potente.</div><div>💬 Mais energia para o dia a dia.</div></div>
+            <a href="https://amzn.to/4vxKheG" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
+        </div>
+    
+        <div class="card" data-categoria="combos">
+            <div class="badge-desconto">- OFF</div>
+            <img src="https://m.media-amazon.com/images/I/61pvNkBtTqL._AC_SL1000_.jpg" alt="Combo Whey Protein Turbo + Bcaa + Creatina - Black Skull">
+            <h2>Combo Whey Protein Turbo + Bcaa + Creatina - Black Skull</h2>
+            <p class="preco">R$ 135,00</p>
+            <div class="comentarios-internos"><div>💬 Kit completo para o mês todo.</div><div>💬 Custo-benefício imbatível.</div></div>
+            <a href="https://amzn.to/3QqpBVA" target="_blank" style="background:#fff; color:#000; text-decoration:none; padding:12px; border-radius:8px; font-weight:bold;">VER NA AMAZON</a>
         </div>
     
     </div>
+
+    <div class="mural-pedidos">
+        <h3>Mural de Pedidos da Galera 🏋️‍♂️</h3>
+        <p style="text-align: center; color: #bbb;">Não achou o que queria? Peça aqui embaixo e eu busco a melhor oferta para você!</p>
+        
+        <div id="disqus_thread"></div>
+    </div>
+
+    <script>
+        function filtrar(cat) {
+            const botoes = document.querySelectorAll('.btn-filtro');
+            botoes.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (cat === 'todos' || card.getAttribute('data-categoria') === cat) {
+                    card.classList.remove('hide');
+                } else {
+                    card.classList.add('hide');
+                }
+            });
+        }
+
+        var disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = 'canaldosuply_mural';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://canal-do-suply.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+
     <footer>
         <p>© 2026 Canal do Suply - Consultar termos na Amazon.br</p>
     </footer>
